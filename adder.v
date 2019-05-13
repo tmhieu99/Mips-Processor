@@ -2,8 +2,8 @@ module adder (a, b, c);
 
 	parameter n = 32;
 
-	input [n-1:0] a,b;
-	wire [32:0] w0;
+	input  [n-1:0] a,b;
+	wire   [32:0] w0;
 	output [n-1:0] c;
 
 	assign w0[0] = 0;
