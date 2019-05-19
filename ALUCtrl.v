@@ -6,30 +6,29 @@ module ALUCtrl(ALUop, Funct, ALU_control);
   always @(*) begin
     case (ALUop)
     // Load and Store: ADD
-    'b 00: ALU_control <= 'b 0010;
+    2'b 00: ALU_control <= 'b 0010;
     // Branch equal/not equal: SUB
-    'b 01: ALU_control <= 'b 0110;
+    2'b 01: ALU_control <= 'b 0110;
     // R-type
-    'b 10:
+    2'b 10:
       case (Funct)
       // ADD
-      'b 100000: ALU_control <= 'b 0010;
+      6'b 100000: ALU_control <= 'b 0010;
       // SUB
-      'b 100010: ALU_control <= 'b 0110;
+      6'b 100010: ALU_control <= 'b 0110;
       // AND
-      'b 100100: ALU_control <= 'b 0000;
+      6'b 100100: ALU_control <= 'b 0000;
       // OR
-      'b 100101: ALU_control <= 'b 0001;
+      6'b 100101: ALU_control <= 'b 0001;
       // SLT
-      'b 101010: ALU_control <= 'b 0111;
+      6'b 101010: ALU_control <= 'b 0111;
 		// NOR
-		'b 100111: ALU_control <= 'b 1100;
+		6'b 100111: ALU_control <= 'b 1100;
 		// MUL
-		'b 100001: ALU_control <= 'b 0100;
+		6'b 100001: ALU_control <= 'b 0100;
 		// DIV
-		'b 100011: ALU_control <= 'b 0101;
+		6'b 100011: ALU_control <= 'b 0101;
       endcase
     endcase
   end
 endmodule
-

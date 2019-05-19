@@ -4,6 +4,7 @@ input [31:0] ALU_op_1,
 input [31:0] ALU_op_2,
 output wire [31:0] ALU_result,
 output wire [7:0] ALU_status );
+reg clktemp = 0;
 reg [63:0] result;
 reg [7:0] status = 8'b00000000;
 wire [63:0] op1;
@@ -15,18 +16,19 @@ assign ALU_result = result[31:0];
 assign ALU_status = status[7:0];
 assign op1= {{32{ALU_op_1[31]}},ALU_op_1};
 assign op2 = {{32{ALU_op_2[31]}},ALU_op_2};
-always@(*)
+assign clkalu = clktemp;
+always@(ALU_control, ALU_op_1, ALU_op_2)
 	begin
 		
 		status = 8'b00000000;
 		case(ALU_control)
 		4'b0010:	
 		begin
-		result = op1 + op2;
-		if(op1[1:0] != 2'b00 || op1[0] != 1'b0)
-		begin
-		status = status+8'b00001000;
-		end
+			result = op1 + op2;
+			if(op1[1:0] != 2'b00 || op1[0] != 1'b0)
+			begin
+			status = status+8'b00001000;
+			end
 		end
 		4'b0110:	result = op1 - op2;
 		4'b0000:	result = op1 & op2;
