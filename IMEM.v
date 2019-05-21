@@ -1,14 +1,30 @@
 module IMEM(
-input [7:0] IMEM_PC,
+input [31:0] IMEM_PC,
 output reg[31:0] IMEM_instruction);
 always@(IMEM_PC)
 begin
 	case(IMEM_PC)
-8'h00: IMEM_instruction = 32'h2010000F;
-8'h01: IMEM_instruction = 32'h20110014;
-8'h02: IMEM_instruction = 32'h20120024;
-8'h03: IMEM_instruction = 32'h02329820;
-8'h04: IMEM_instruction = 32'h0253402A;
+		32'd0: IMEM_instruction = 32'h2010000F; //ADDI $s0 $zero 0x000F
+		32'd4: IMEM_instruction = 32'h20110014; //ADDI $s1 $zero 0x0014
+		32'd8: IMEM_instruction = 32'h20120024; //ADDI $s2 $zero 0x0024
+		32'd12: IMEM_instruction = 32'h02329820; //ADD $s3 $s1 $s2
+		32'd16: IMEM_instruction = 32'h0272402A; //SLT $t0 $s2 $s3
+		32'd20: IMEM_instruction = 32'b00100000000010010000000000000100; //addi $t1, $zero, 0x4
+		32'd24: IMEM_instruction = 32'b00100000000010100000000000000100; //addi $t2, $zero, 0x9
+		32'd28: IMEM_instruction = 32'b00000001001010100101100000100000; //add $t3 $t1 $t2
+		32'd32: IMEM_instruction = 32'b00100001001010010000000000000111; // addi $t1, $t1 , 0x6
+		32'd36: IMEM_instruction = 32'b00000001001010110110000000100000; //add $t4, $t1, $t3
+		32'd40: IMEM_instruction = 32'b00000001010010010110000000100010; // sub $t4, $t2, $t1 
+		32'd44: IMEM_instruction = 32'b00000001010010010110000000100100; // and t4 t2 t1
+		32'd48: IMEM_instruction = 32'b00000001010010010110000000100101; // or t4 t2 t1
+		32'd52: IMEM_instruction = 32'b00000001010010010110000000101010; // slt t4 t2 t1
+		32'd56: IMEM_instruction = 32'b00000001001010100110000000101010;// slt t4 t1 t2
+		32'd60: IMEM_instruction = 32'b10101101010010010000000000000000; // sw t1, 0(t2);
+		32'd64: IMEM_instruction = 32'b10001101010010110000000000000000; // lw t3, 0(t2);
+		32'd68: IMEM_instruction = 32'b10001101011011000000000000000100; //lw t4, 4(t3);
+		32'd72: IMEM_instruction = 32'b10001101011011010000000000000100; //lw t5 , 0x4(t3)
+		32'd76: IMEM_instruction = 32'b00010001001010101111111111111111; // beq t1, t2, 0xFFFF
+		default: IMEM_instruction = 32'h0;
 	endcase
 end
 endmodule
