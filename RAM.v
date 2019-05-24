@@ -13,15 +13,15 @@ always@(negedge clk)
 begin
 	if(DMEM_mem_write == 1 && DMEM_mem_read==0)
 		begin
-		mem[DMEM_address] = DMEM_data_in;
+		mem[DMEM_address] <= DMEM_data_in;
 		end
 	else if(DMEM_mem_read == 1 && DMEM_mem_write == 0)
 		begin
 		if (mem[DMEM_address] === 32'dx)
 		begin
-		mem[DMEM_address] = 31'd0;
+		mem[DMEM_address] <= 31'd0;
 		end
-		out = mem[DMEM_address];
+		out <= mem[DMEM_address];
 		end
 end
 endmodule

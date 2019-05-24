@@ -3,9 +3,16 @@ reg [31:0] PC;
 initial begin
 PC = 32'h00000000;
 end
-always@(posedge clk)
+always@(negedge clk)
 begin
-	PC = add_in;
+	if (add_in === 32'dx)
+	begin
+		PC <= 32'd0; 
+	end
+	else
+	begin
+		PC <= add_in;
+	end
 end
 assign ins_add = PC;
 endmodule
