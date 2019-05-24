@@ -42,17 +42,18 @@ wire [31:0] out2;
 wire [31:0] outadd1;
 wire [31:0] outadd2;
 wire [31:0] outadd3;
-wire clk_PC;
+wire clk_temp_initial;
 wire [7:0] status;
-wire [31:26] opcodetemp;
-wire [5:0] functemp;
-assign opcodetemp =  machinecode [31:26];
-assign functemp = machinecode[5:0];
+reg [31:26] opcodetemp;
+reg [5:0] functemp;
 
+assign opcode = opcodetemp;
+assign func = functemp;
 
-
-always @(clk_PC)
+always @(clk_temp_initial)
 begin
+	opcodetemp =  machinecode [31:26];
+	functemp = machinecode[5:0];
 	rs <= machinecode[25:21];
 	rt <= machinecode[20:16];
 	rd <= machinecode[15:11];
@@ -69,7 +70,7 @@ always@(posedge clktemp)
 	end
 
 
-PC_counter pc(ins_add, clk_PC, SYS_clk, outmux5);
+PC_counter pc(ins_add, SYS_clk, outmux5);
 
 Adder add1(outadd1, ins_add, 32'd4);
 
@@ -81,9 +82,9 @@ mux32 mux4(outadd1, outadd3, outand, outmux4);
 
 mux32 mux5(outmux4, outadd2, Jump, outmux5);
 
-IMEM ins(ins_add, machinecode);
+IMEM ins(ins_add, clk_temp_initial, machinecode);
 
-control ctrl(opcodetemp,functemp,Jump, Branch, MemRead, MemWrite, 
+control ctrl(opcode,func,Jump, Branch, MemRead, MemWrite, 
 Mem2Reg, ALU_op, Exception, ALUsrc, RegWrite, RegDst, ALU_ctrl);
 
 Mux2to1 mux1(rt, rd, RegDst, outmux1);

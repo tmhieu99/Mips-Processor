@@ -8,7 +8,7 @@ reg [31:0] SYS_output_sel;
 wire[26:0] SYS_leds;
 initial
 	begin
-SYS_clk = 1'b0;
+	SYS_clk = 1'b0;
 	SYS_reset = 0;
 	SYS_load = 0;
 	SYS_pc_val = 32'b0;
