@@ -30,18 +30,6 @@ always@(ALU_control, ALU_op_1, ALU_op_2)
 		4'b0001:	result = op1 | op2;
 		4'b0111:	result = (op1 < op2)?1:0;
 		4'b1100:	result = ~(op1 | op2);
-		4'b0100:	result = op1 * op2;
-		4'b0101:	
-		begin
-		if(op2!=32'h0)
-		begin
-		result = op1 / op2;
-		end
-		else
-		begin
-		status = status+8'b00000100;
-		end
-		end
 		default:	result = op1 + op2;
 		endcase
 	if(result == 0)

@@ -104,7 +104,7 @@ always@(Opcode , funct)
 					ALU_control = 4'b 0110;
 					end
 				//Jump
-				6'b 000001: begin
+				6'b 000010: begin
 					Jump		= 1; 
 					Branch		= 0; 
 					MemRead		= 0; 
