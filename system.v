@@ -5,7 +5,8 @@ input SYS_load,
 input [31:0] SYS_pc_val,
 input [31:0] SYS_output_sel,
 input [3:0] out_sel,
-output reg [17:0] SYS_leds);
+output reg [31:0] SYS_leds,
+output reg [31:0] out_PC);
 wire [31:26] opcode;
 wire [5:0] func;
 wire[31:0] ins_add;
@@ -36,17 +37,18 @@ wire [31:0] outadd1;
 wire [31:0] outadd2;
 wire [31:0] outadd3;
 wire [7:0] status;
-
-	always@(out_sel)
+wire outread;
+wire outwrite;
+	always@(negedge SYS_clk or negedge SYS_load or negedge SYS_reset)
 	begin
+		out_PC = ins_add[31:0];
 		case(out_sel)
-		4'b0000: SYS_leds[17:0] = ins_add[17:0];
-		4'b0001: SYS_leds[17:0] = machinecode[17:0];
-		4'b0010: SYS_leds[17:0] = out1[17:0];
-		4'b0011: SYS_leds[17:0] = out2[17:0];
-		4'b0100: SYS_leds[17:0] = ALU_res[17:0];
-		4'b0101: SYS_leds[7:0] = status[7:0];
-		4'b0110: SYS_leds[17:0] = outram [17:0];
+		4'b0001: SYS_leds[31:0] = machinecode[31:0];
+		4'b0010: SYS_leds[31:0] = out1[31:0];
+		4'b0011: SYS_leds[31:0] = out2[31:0];
+		4'b0100: SYS_leds[31:0] = ALU_res[31:0];
+		4'b0101: SYS_leds[31:0] = { {24{1'b0}} , status[7:0] };
+		4'b0110: SYS_leds[31:0] = outram [31:0];
 		endcase
 	end
 
@@ -80,7 +82,9 @@ ALU alu1(ALU_ctrl, out1, outmux2, ALU_res, status);
 
 and(outand,Branch,status[7]);
 
-RAM ram(ALU_res, out2, MemWrite, MemRead, SYS_clk , outram);
+exception ex(outwrite, outread, status, MemRead, MemWrite);
+
+RAM ram(ALU_res, out2, outwrite, outread, SYS_clk ,SYS_reset, outram);
 
 mux32 mux3(ALU_res, outram, Mem2Reg, outmux3);
 endmodule

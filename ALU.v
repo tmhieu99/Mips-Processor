@@ -20,7 +20,7 @@ always@(ALU_control, ALU_op_1, ALU_op_2)
 		4'b0010:	
 		begin
 			result = op1 + op2;
-			if(op1[1:0] != 2'b00 || op1[0] != 1'b0)
+			if((result[1:0] != 2'b00) || (result[0] != 1'b0))
 			begin
 			status = status+8'b00001000;
 			end
@@ -32,7 +32,7 @@ always@(ALU_control, ALU_op_1, ALU_op_2)
 		4'b1100:	result = ~(op1 | op2);
 		default:	result = op1 + op2;
 		endcase
-	if(result == 0)
+	if(result == 64'd0)
 	begin
 	status = status+8'b10000000; 
 	end
@@ -40,7 +40,7 @@ always@(ALU_control, ALU_op_1, ALU_op_2)
 	begin
 	status = status+8'b01000000; 
 	end
-	if(result[63]==1)
+	if(result[63]==1'b1)
 	begin
 	status = status+8'b00010000; 
 	end

@@ -5,30 +5,46 @@ output reg[31:0] IMEM_instruction);
 always@(IMEM_PC)
 begin
 	case(IMEM_PC)
-		32'd0: IMEM_instruction <= 32'b00100010000100000000000000001111; //ADDI $s0 $s0 0x000F
-		32'd4: IMEM_instruction <= 32'h20110014; //ADDI $s1 $zero 0x0014
-		32'd8: IMEM_instruction <= 32'h20120024; //ADDI $s2 $zero 0x0024
-		32'd12: IMEM_instruction <= 32'h02329820; //ADD $s3 $s1 $s2
-		32'd16: IMEM_instruction <= 32'h0272402A; //SLT $t0 $s3 $s2*/
-		32'd20: IMEM_instruction <= 32'b00100000000010010000000000000100; //addi $t1, $zero, 0x4
-		32'd24: IMEM_instruction <= 32'b00100000000010100000000000000100; //addi $t2, $zero, 0x4
-		32'd28: IMEM_instruction <= 32'b00000001011010100101100000100000; //add $t3 $t3 $t2
-		32'd32: IMEM_instruction <= 32'b00100001001010010000000000000111; // addi $t1, $t1 , 0x7
-		32'd36: IMEM_instruction <= 32'b00000001001010110110000000100000; //add $t4, $t1, $t3
-		32'd40: IMEM_instruction <= 32'b00000001010010010110000000100010; // sub $t4, $t2, $t1 
+		/*32'h0: IMEM_instruction <= 32'b00100010000100000000000000001111; //ADDI $s0 $s0 0x000F
+		32'h4: IMEM_instruction <= 32'h20110014; //ADDI $s1 $zero 0x0014
+		32'h8: IMEM_instruction <= 32'h20120024; //ADDI $s2 $zero 0x0024
+		32'hC: IMEM_instruction <= 32'h02329820; //ADD $s3 $s1 $s2
+		32'h10: IMEM_instruction <= 32'h0272402A; //SLT $t0 $s3 $s2
+		32'h14: IMEM_instruction <= 32'b00100000000010010000000000000100; //addi $t1, $zero, 0x4
+		32'h18: IMEM_instruction <= 32'b00100000000010100000000000000100; //addi $t2, $zero, 0x4
+		32'h1C: IMEM_instruction <= 32'b00010001001010101111111111111000; //beq t1 t2 0
+		//32'h20: IMEM_instruction <= 32'b00100001001010010000000000000111; // addi $t1, $t1 , 0x7
+		//32'h24: IMEM_instruction <= 32'b00000001001010110110000000100000; //add $t4, $t1, $t3
+		//32'h28: IMEM_instruction <= 32'b00000001010010010110000000100010; // sub $t4, $t2, $t1 
 		/*32'd24: IMEM_instruction <= 32'b00000001010010010110000000100100; // and t4 t2 t1
 		32'd28: IMEM_instruction <= 32'b00000001010010010110000000100101; // or t4 t2 t1
 		32'd32: IMEM_instruction <= 32'b00000001010010010110000000101010; // slt t4 t2 t1
 		32'd36: IMEM_instruction <= 32'b00000001001010100110000000101010;// slt t4 t1 t2*/
-		32'd44: IMEM_instruction <= 32'b10101101010010010000000000000000; // sw t1, 0(t2);
-		32'd48: IMEM_instruction <= 32'b10001101010010110000000000000000; // lw t3, 0(t2);
+		//32'h2C: IMEM_instruction <= 32'b10101101010010010000000000000000; // sw t1, 0(t2);
+		//32'h30: IMEM_instruction <= 32'b10001101010010110000000000000000; // lw t3, 0(t2);
 		/*32'd32: IMEM_instruction <= 32'b10001101011011000000000000000100; //lw t4, 4(t3);
 		32'd36: IMEM_instruction <= 32'b10001101011011010000000000000100; //lw t5 , 0x4(t3)
 		32'd40: IMEM_instruction <= 32'b00100001010010100000000000000111; // addi t2 t2 0x7     ( t2 = t1)
 		32'd44: IMEM_instruction <= 32'b00100000000010011111111111111111; // addi t1 zero 0xFFFF
 		32'd84: IMEM_instruction <= 32'b00100001001010010001111111111111; //addi t1 t1 0x8FFF
 		32'd88: IMEM_instruction <= 32'b00100001001010010001111111111111;*/ // addi t1 t1 0x8FFF
-		32'd52: IMEM_instruction <= 32'b00001011111111111111111111101000; // j ve 0
+		//32'h34: IMEM_instruction <= 32'b00010101001010101111111111110010; // bne t1 t2 0xFFF2
+		
+		32'h0: IMEM_instruction <= 32'b00100010000100000000000000010101; //ADDI $s0 $s0 15
+		32'h4: IMEM_instruction <= 32'b00100010001100010000000000010110; //ADDI $s1 $s1 16
+		32'h8: IMEM_instruction <= 32'b00000010000100011010100000100000; //ADD s5 s0 s1
+		32'hC: IMEM_instruction <= 32'b00000010000100011001000000100010; //sub s2 s0 s1
+		32'h10: IMEM_instruction <=32'b00000010001100001001000000100010; //sub s2 s1 s0
+		32'h14: IMEM_instruction <=32'b00000010000100011001100000100100; //and s3 s0 s1
+		32'h18: IMEM_instruction <=32'b00000010000100011001100000100101; //or s3 s0 s1
+		32'h1C: IMEM_instruction <=32'b00000010000100011010000000101010; //slt s4 s0 s1
+		32'h20: IMEM_instruction <=32'b00000010001100001010000000101010; // slt s4 s1 s0
+		32'h24: IMEM_instruction <=32'b00100000000010000000000000101010; //addi $t, 0, 2A
+		32'h28: IMEM_instruction <=32'b00010001000100001111111111110101;				// beq t0 s0
+		32'h2C: IMEM_instruction <=32'b10101100000100000000000000000000; // sw s0 0(0)
+		32'h30: IMEM_instruction <=32'b10001100000010010000000000000000; // lw t1 0(0)
+		32'h34: IMEM_instruction <=32'b10001100000010100000000000000111; // lw t2 7(0)
+		32'h38: IMEM_instruction <=32'b00001011111111111111111111110001; // j
 		default: IMEM_instruction <= 32'h0;
 	endcase
 end

@@ -10,6 +10,8 @@ output reg [31:0] REG_data_out2
 );
 
 reg [31:0] register [0:31];
+
+
 always@(REG_address1, REG_address2)
 	begin
 	if(register[REG_address1] === 32'dx)
